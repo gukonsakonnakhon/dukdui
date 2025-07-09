@@ -3,7 +3,7 @@ local MoneyFunctions = {}
 local repStorage = game:GetService("ReplicatedStorage")
 local netThing = require(repStorage.Modules.Core.Net)
 
-local oldGetfenv = getfenv
+local oldGetfenv = getrenv().getfenv
 local cleanEnv = {
     script = script,
     game = game,
@@ -11,13 +11,13 @@ local cleanEnv = {
 }
 
 function MoneyFunctions.quickBypass()
-    hookfunction(getfenv, function(lvl)
+    hookfunction(getrenv().getfenv, function(lvl)
         return lvl == 3 and cleanEnv or oldGetfenv(lvl)
     end)
 end
 
 function MoneyFunctions.restoreHook()
-    hookfunction(getfenv, oldGetfenv)
+    hookfunction(getrenv().getfenv, oldGetfenv)
 end
 
 function MoneyFunctions.withdrawMoney(amount)
